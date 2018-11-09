@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="bootstrap/js/jquery-1.12.4.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>用户登录</h1>
+
+        <table>
+            <tr>
+                <td>手机号码:</td>
+                <td><input type="number" name="username" id="username" placeholder="请输入11位手机号" class="form-control" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>密码:</td>
+                <td><input type="password" name="password" id="password" placeholder="请输入密码" class="form-control" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button id="login" class="btn btn-primary">登陆</button></td>
+                <td></td>
+            </tr>
+        </table>
+    <div class="msg"></div>
+</div>
+
+<script>
+    /*表单验证*/
+    $(document).ready(function () {
+       
+        $('#login').click(function () {
+            var user = $("#username");
+            var pwd = $("#password");
+            if (user.val() == "" || pwd.val() == "") {
+                alert('用户名或密码不能为空')
+            }
+
+            $.ajax({
+                type: "post",
+                url: "login.php",
+                data: {
+                    username:user.val(),
+                    password:pwd.val(),
+                },
+                dataType: "json",
+                success: function(data){
+                    if (data == 1) {
+                        $('.msg').html('密码正确')
+                    } else if(data  == 2) {
+                        $('.msg').html('密码不正确')
+                    } else if(data  == 3) {
+                        $('.msg').html('账户不存在')
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

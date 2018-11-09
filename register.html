@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="bootstrap/js/jquery-1.12.4.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="container">
+    <h1>用户注册</h1>
+
+        <table>
+            <tr>
+                <td>手机号码:</td>
+                <td><input type="number" name="username" id="username" placeholder="请输入11位手机号" class="form-control" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>性别:</td>
+                <td>
+                    <input type="radio" name="sex" value="1" checked />男
+                    <input type="radio" name="sex" value="0" />女
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>密码:</td>
+                <td><input type="password" name="password" id="password" placeholder="请输入密码" class="form-control" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button id="registbn" class="btn btn-primary">注册</button></td>
+                <td></td>
+            </tr>
+        </table>
+
+</div>
+<div class="msg"></div>
+<script>
+    /*表单验证*/
+$(function () {
+       
+    $('#registbn').click(function () {
+        var user = $("#username").val();
+        var pwd = $("#password").val();
+        var sex = $(".sex").val();
+        if (user === "" || pwd === "") {
+            alert('用户名或密码不能为空');
+            return false;
+        }
+        
+
+       /* $.POST("register.php",{username:user,password:pwd,sex:sex},function(e){
+            if(e=='OK'){
+                alert(1);
+            }else if(e=='YES'){
+                alert(2);
+            }else if(e=='NO'){
+                alert(3);
+            }
+        })*/
+    $.ajax({
+        url: "register.php",
+        type: "POST",
+        data: {
+            username:user,
+            password:pwd,
+            sex:sex,
+        },
+        dataType: "json",
+        beforeSend:function () {
+            // alert('hah ');
+        },
+        success: function(msg){
+            if (msg == null) {
+                $('.msg').html('用户名存在');
+                return false;
+            } else if (msg == 1) {
+                $('.msg').html('成功');
+            } else if (msg == 0) {
+                $('.msg').html('哈哈');
+            }
+        },
+        error: function (error) {
+            // body...
+            alert('注册失败');
+        },
+    });
+    });
+});
+</script>
+</body>
+</html>
